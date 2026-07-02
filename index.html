@@ -1,0 +1,690 @@
+
+<!DOCTYPE html>
+<!-- DOCTYPE: Tells the browser this is an HTML5 document -->
+
+<html lang="en">
+<!-- html: Root element of the entire page. lang="en" means English -->
+
+<head>
+<!-- head: Contains background info — title, style, meta (not visible on page) -->
+
+  <meta charset="UTF-8">
+  <!-- meta charset: Supports all characters from all languages -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- viewport: Makes the page display correctly on mobile devices -->
+
+  <title>My Simple Blog</title>
+  <!-- title: The name shown on the browser tab -->
+
+  <style>
+    /* style tag: All CSS is written here (Internal CSS) */
+
+    /* --- Reset and Base --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    /* *: Removes default margin and padding from every element */
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+    /* body: Sets font, background color and line height for the whole page */
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* a: Removes underline from links and inherits color from parent */
+
+    /* =====================
+       HEADER
+    ===================== */
+    header {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      color: #ffffff;
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    /* header: Top section of the page.
+       Gradient blue background, white text.
+       Flexbox places logo and tagline side by side */
+
+    header .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    /* .logo: The large site name displayed in the header */
+
+    header .tagline {
+      font-size: 0.9rem;
+      opacity: 0.85;
+      font-style: italic;
+    }
+    /* .tagline: Small subtitle text on the right side of the header */
+
+    /* =====================
+       NAV
+    ===================== */
+    nav {
+      background: #1e293b;
+      padding: 0 40px;
+      display: flex;
+      gap: 6px;
+    }
+    /* nav: Navigation menu bar.
+       Dark background, flex places links side by side */
+
+    nav a {
+      display: inline-block;
+      padding: 14px 18px;
+      color: #cbd5e1;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.25s;
+      border-bottom: 3px solid transparent;
+    }
+    /* nav a: Style for each menu link.
+       3px bottom border reserved for the hover effect */
+
+    nav a:hover {
+      color: #ffffff;
+      border-bottom: 3px solid #3b82f6;
+      background: rgba(255,255,255,0.05);
+    }
+    /* hover: Link turns white and a blue underline appears */
+
+    nav a.active {
+      color: #60a5fa;
+      border-bottom: 3px solid #60a5fa;
+    }
+    /* .active: Highlights the link of the current page */
+
+    /* =====================
+       PAGE LAYOUT WRAPPER
+    ===================== */
+    .wrapper {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    /* .wrapper: Centered container for all content.
+       CSS Grid creates two columns:
+       Left = main content (2 parts), Right = sidebar (1 part) */
+
+    /* =====================
+       SECTION
+    ===================== */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    /* .main-content: Stacks all sections top to bottom in left column */
+
+    section {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+    }
+    /* section: Groups related content together.
+       White background, rounded corners, subtle shadow */
+
+    section h2 {
+      font-size: 1.3rem;
+      color: #1e40af;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    /* section h2: Blue heading with a divider line underneath */
+
+    /* =====================
+       ARTICLE
+    ===================== */
+    article {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 18px;
+      border-left: 4px solid #3b82f6;
+      margin-bottom: 16px;
+      transition: transform 0.2s;
+    }
+    /* article: Independent self-contained content block (like a blog post).
+       Blue left border separates each article visually */
+
+    article:hover {
+      transform: translateX(4px);
+    }
+    /* hover: Article slides slightly to the right on mouse over */
+
+    article:last-child {
+      margin-bottom: 0;
+    }
+
+    .article-meta {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 14px;
+    }
+    /* .article-meta: Small row showing author name, date and category */
+
+    article h3 {
+      font-size: 1.1rem;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    article p {
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2563eb;
+      cursor: pointer;
+    }
+
+    .read-more:hover { text-decoration: underline; }
+    /* .read-more: Blue "Read More" link at the bottom of each article */
+
+    /* =====================
+       ASIDE — Sidebar
+    ===================== */
+    aside {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    /* aside: Right side panel (sidebar).
+       Stacks small widget cards top to bottom */
+
+    .widget {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+    }
+    /* .widget: Each individual card/box inside the aside */
+
+    .widget h3 {
+      font-size: 1rem;
+      color: #1e40af;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .category-list {
+      list-style: none;
+    }
+    /* list-style none: Removes default bullet points from the list */
+
+    .category-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .category-list li span {
+      background: #dbeafe;
+      color: #1e40af;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    /* category badge: Blue rounded pill showing post count */
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-cloud span {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tag-cloud span:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+    /* tag-cloud: Small clickable topic tags, turns blue on hover */
+
+    .subscribe input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .subscribe button {
+      width: 100%;
+      padding: 9px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .subscribe button:hover { background: #1d4ed8; }
+    /* subscribe widget: Email input field and subscribe button */
+
+    /* =====================
+       FOOTER
+    ===================== */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      margin-top: 10px;
+    }
+    /* footer: Bottom section of the page. Very dark background */
+
+    .footer-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    /* .footer-grid: Creates 3 equal columns inside the footer */
+
+    .footer-col h4 {
+      color: #e2e8f0;
+      font-size: 1rem;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .footer-col p, .footer-col li {
+      font-size: 13px;
+      line-height: 1.9;
+      color: #94a3b8;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li:hover { color: #e2e8f0; cursor: pointer; }
+
+    .footer-bottom {
+      text-align: center;
+      padding: 14px 20px;
+      border-top: 1px solid #1e293b;
+      font-size: 13px;
+      color: #64748b;
+    }
+    /* .footer-bottom: Copyright text at the very bottom of the footer */
+
+    /* =====================
+       RESPONSIVE — Mobile
+    ===================== */
+    @media (max-width: 700px) {
+      /* @media: Changes layout when screen is smaller than 700px (mobile) */
+
+      .wrapper {
+        grid-template-columns: 1fr;
+        /* Mobile: Single column — aside moves below the main content */
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        /* Mobile: Footer becomes single column too */
+      }
+
+      header {
+        flex-direction: column;
+        text-align: center;
+        gap: 6px;
+      }
+      /* Mobile: Logo and tagline stack vertically */
+
+      nav {
+        flex-wrap: wrap;
+        padding: 0 10px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ======================================
+       HEADER TAG
+       Sits at the very top of the page.
+       Contains the site logo and tagline.
+  ======================================= -->
+  <header>
+
+    <div class="logo">📰 MyBlog</div>
+    <!-- Site name / logo text -->
+
+    <div class="tagline">"Learn · Share · Grow"</div>
+    <!-- Short tagline displayed on the right side of header -->
+
+  </header>
+
+
+  <!-- ======================================
+       NAV TAG
+       Navigation menu bar.
+       Contains links to different pages/sections.
+  ======================================= -->
+  <nav>
+
+    <a href="#" class="active">🏠 Home</a>
+    <!-- active class = currently on this page, so it is highlighted -->
+
+    <a href="#">💻 Technology</a>
+    <!-- Link to Technology page -->
+
+    <a href="#">🎓 Education</a>
+    <!-- Link to Education page -->
+
+    <a href="#">🌍 Travel</a>
+    <!-- Link to Travel page -->
+
+    <a href="#">📬 Contact</a>
+    <!-- Link to Contact page -->
+
+  </nav>
+
+
+  <!-- ======================================
+       WRAPPER DIV
+       Centers content and creates the
+       two-column grid layout (main + aside).
+  ======================================= -->
+  <div class="wrapper">
+
+    <!-- LEFT COLUMN: Main Content -->
+    <div class="main-content">
+
+      <!-- ======================================
+           SECTION TAG
+           Groups a set of related content together.
+           This section contains the latest blog posts.
+      ======================================= -->
+      <section>
+
+        <h2>📝 Latest Posts</h2>
+        <!-- Heading for this section -->
+
+        <!-- ======================================
+             ARTICLE TAG
+             Represents one independent blog post.
+             Each article can stand alone on its own.
+        ======================================= -->
+        <article>
+
+          <div class="article-meta">
+            <span>✍️ John Smith</span>
+            <!-- Name of the author -->
+            <span>📅 June 28, 2025</span>
+            <!-- Date the post was published -->
+            <span>🏷️ Technology</span>
+            <!-- Category / topic label -->
+          </div>
+
+          <h3>Why Should You Learn HTML5?</h3>
+          <!-- Title/headline of this article -->
+
+          <p>HTML5 is the foundation of the modern web. Learning it allows you to build any website from scratch. It introduced semantic tags, media support, canvas, and many powerful new features.</p>
+          <!-- The main paragraph content of the article -->
+
+          <a class="read-more">Read More →</a>
+          <!-- Link for the user to read the full article -->
+
+        </article>
+        <!-- Article 1 ends -->
+
+        <article>
+          <!-- Second independent blog post article -->
+
+          <div class="article-meta">
+            <span>✍️ Emma Davis</span>
+            <span>📅 June 25, 2025</span>
+            <span>🏷️ Education</span>
+          </div>
+
+          <h3>Build Layouts Easily with CSS Grid</h3>
+
+          <p>CSS Grid is a powerful two-dimensional layout system. It lets you create rows and columns to build any kind of page layout — simply, cleanly, and responsively.</p>
+
+          <a class="read-more">Read More →</a>
+
+        </article>
+        <!-- Article 2 ends -->
+
+        <article>
+          <!-- Third independent blog post article -->
+
+          <div class="article-meta">
+            <span>✍️ Sophia Lee</span>
+            <span>📅 June 20, 2025</span>
+            <span>🏷️ Travel</span>
+          </div>
+
+          <h3>Top 5 Most Beautiful Travel Destinations in 2025</h3>
+
+          <p>From the beaches of Cox's Bazar to the forests of Sundarbans — nature lovers have plenty of breathtaking destinations to explore around the world this year.</p>
+
+          <a class="read-more">Read More →</a>
+
+        </article>
+        <!-- Article 3 ends -->
+
+      </section>
+      <!-- Latest Posts section ends -->
+
+
+      <!-- ======================================
+           SECOND SECTION TAG
+           A separate group — About this blog.
+      ======================================= -->
+      <section>
+
+        <h2>ℹ️ About This Blog</h2>
+        <!-- Heading for the About section -->
+
+        <p style="color:#475569; font-size:15px;">
+          <strong>MyBlog</strong> is an educational blog covering Technology,
+          Education, and Travel. Our goal is to explain complex topics
+          in a simple, clear, and easy-to-understand way for everyone.
+        </p>
+        <!-- Description paragraph about the website -->
+
+      </section>
+      <!-- About section ends -->
+
+    </div>
+    <!-- main-content div ends -->
+
+
+    <!-- ======================================
+         ASIDE TAG
+         The sidebar on the right side of the page.
+         Contains supplementary content related to
+         but separate from the main articles.
+    ======================================= -->
+    <aside>
+
+      <!-- Sidebar Widget 1: Categories -->
+      <div class="widget">
+
+        <h3>📂 Categories</h3>
+        <!-- Widget heading -->
+
+        <ul class="category-list">
+          <!-- Unordered list of blog categories -->
+
+          <li>💻 Technology <span>12</span></li>
+          <!-- Category name on left, post count badge on right -->
+
+          <li>🎓 Education <span>8</span></li>
+          <li>🌍 Travel <span>5</span></li>
+          <li>💡 Tips & Tricks <span>9</span></li>
+        </ul>
+
+      </div>
+      <!-- Widget 1 ends -->
+
+
+      <!-- Sidebar Widget 2: Popular Tags -->
+      <div class="widget">
+
+        <h3>🏷️ Popular Tags</h3>
+        <!-- Widget heading -->
+
+        <div class="tag-cloud">
+          <!-- Flexible container for tag pills -->
+
+          <span>HTML5</span>
+          <!-- Each span is one clickable topic tag -->
+          <span>CSS</span>
+          <span>JavaScript</span>
+          <span>Web Design</span>
+          <span>Bootstrap</span>
+          <span>Responsive</span>
+          <span>Travel</span>
+          <span>Tips</span>
+        </div>
+
+      </div>
+      <!-- Widget 2 ends -->
+
+
+      <!-- Sidebar Widget 3: Newsletter -->
+      <div class="widget subscribe">
+
+        <h3>📧 Newsletter</h3>
+        <!-- Widget heading -->
+
+        <p style="font-size:13px; color:#64748b; margin-bottom:12px;">
+          Subscribe to get notified when new posts are published!
+        </p>
+        <!-- Short description text inside the widget -->
+
+        <input type="email" placeholder="Enter your email...">
+        <!-- Email input field for the user to type their address -->
+
+        <button onclick="alert('Subscribed! ✅')">Subscribe Now</button>
+        <!-- Button that triggers an alert message when clicked -->
+
+      </div>
+      <!-- Widget 3 ends -->
+
+    </aside>
+    <!-- aside ends -->
+
+  </div>
+  <!-- wrapper div ends -->
+
+
+  <!-- ======================================
+       FOOTER TAG
+       Sits at the very bottom of the page.
+       Contains copyright info, links and contact details.
+  ======================================= -->
+  <footer>
+
+    <div class="footer-grid">
+      <!-- Grid container that creates 3 columns in the footer -->
+
+      <!-- Footer Column 1: About -->
+      <div class="footer-col">
+        <h4>📰 MyBlog</h4>
+        <!-- Site name repeated in footer -->
+
+        <p>Writing about Technology, Education and Travel. A place to learn complex topics explained in a simple way.</p>
+        <!-- Brief site description in footer -->
+      </div>
+
+      <!-- Footer Column 2: Quick Links -->
+      <div class="footer-col">
+        <h4>🔗 Quick Links</h4>
+        <!-- Navigation links repeated in footer for easy access -->
+
+        <ul>
+          <li>🏠 Home</li>
+          <li>💻 Technology</li>
+          <li>🎓 Education</li>
+          <li>🌍 Travel</li>
+          <li>📬 Contact Us</li>
+        </ul>
+      </div>
+
+      <!-- Footer Column 3: Contact Info -->
+      <div class="footer-col">
+        <h4>📬 Contact</h4>
+        <!-- Contact details displayed in footer -->
+
+        <p>📧 info@myblog.com</p>
+        <!-- Email address -->
+
+        <p>📍 Dhaka, Bangladesh</p>
+        <!-- Physical location -->
+
+        <p>📞 +880 1700-000000</p>
+        <!-- Phone number -->
+
+        <p style="margin-top:12px;">
+          <strong style="color:#e2e8f0;">Follow Us:</strong><br>
+          Facebook · Twitter · YouTube
+          <!-- Social media platform names -->
+        </p>
+      </div>
+
+    </div>
+    <!-- footer-grid ends -->
+
+    <!-- Footer Bottom Bar: Copyright -->
+    <div class="footer-bottom">
+      <p>© 2025 MyBlog · All Rights Reserved · Made with ❤️ in Bangladesh</p>
+      <!-- Copyright notice shown at the very bottom -->
+    </div>
+
+  </footer>
+  <!-- footer ends -->
+
+</body>
+<!-- body ends — all visible content ends here -->
+
+</html>
+<!-- html ends — the entire document ends here -->
